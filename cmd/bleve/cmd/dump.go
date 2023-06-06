@@ -21,8 +21,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var docID string
-
 // dumpCmd represents the dump command
 var dumpCmd = &cobra.Command{
 	Use:   "dump [index path]",

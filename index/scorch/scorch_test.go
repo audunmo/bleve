@@ -1040,8 +1040,8 @@ func TestIndexBatch(t *testing.T) {
 		externalDocIds[externalID] = struct{}{}
 	}
 	expectedDocIds := map[string]struct{}{
-		"2": struct{}{},
-		"3": struct{}{},
+		"2": {},
+		"3": {},
 	}
 	if !reflect.DeepEqual(externalDocIds, expectedDocIds) {
 		t.Errorf("expected ids: %v, got ids: %v", expectedDocIds, externalDocIds)
@@ -1383,10 +1383,10 @@ func TestIndexInsertFields(t *testing.T) {
 			fieldsMap[field] = struct{}{}
 		}
 		expectedFieldsMap := map[string]struct{}{
-			"_id":       struct{}{},
-			"name":      struct{}{},
-			"age":       struct{}{},
-			"unixEpoch": struct{}{},
+			"_id":       {},
+			"name":      {},
+			"age":       {},
+			"unixEpoch": {},
 		}
 		if !reflect.DeepEqual(fieldsMap, expectedFieldsMap) {
 			t.Errorf("expected fields: %v, got %v", expectedFieldsMap, fieldsMap)
@@ -1683,27 +1683,35 @@ func TestDocValueReaderConcurrent(t *testing.T) {
 	// now have 10 goroutines try to visit field values for doc 1
 	// in a random field
 	var wg sync.WaitGroup
+	errs := make(chan error, 10)
+
 	for j := 0; j < 10; j++ {
 		wg.Add(1)
-		go func() {
+		go func(t *testing.T) {
 			r, err := idx.Reader()
 			if err != nil {
-				t.Fatal(err)
+				// Errors should propagate to the test goroutine
+				errs <- err
 			}
 			docNumber, err := r.InternalID("1")
 			if err != nil {
-				t.Fatal(err)
+				errs <- err
 			}
 			dvr, err := r.DocValueReader([]string{fmt.Sprintf("f%d", rand.Intn(100))})
 			if err != nil {
-				t.Fatal(err)
+				errs <- err
 			}
 			err = dvr.VisitDocValues(docNumber, func(field string, term []byte) {})
 			if err != nil {
-				t.Fatal(err)
+				errs <- err
 			}
 			wg.Done()
-		}()
+		}(t)
+	}
+
+	err = <-errs
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	wg.Wait()

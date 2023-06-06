@@ -18,7 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"math"
 	"os"
@@ -691,7 +691,7 @@ func TestIndexCreateNewOverExisting(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	index, err = New(tmpIndexPath, NewIndexMapping())
+	_, err = New(tmpIndexPath, NewIndexMapping())
 	if err != ErrorIndexPathExists {
 		t.Fatalf("expected error index path exists, got %v", err)
 	}
@@ -725,7 +725,7 @@ func TestIndexOpenMetaMissingOrCorrupt(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	index, err = Open(tmpIndexPath)
+	_, err = Open(tmpIndexPath)
 	if err == nil {
 		t.Fatalf("expected error for unknown storage type, got %v", err)
 	}
@@ -736,7 +736,7 @@ func TestIndexOpenMetaMissingOrCorrupt(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	index, err = Open(tmpIndexPath)
+	_, err = Open(tmpIndexPath)
 	if err != ErrorIndexMetaCorrupt {
 		t.Fatalf("expected error index metadata corrupted, got %v", err)
 	}
@@ -747,7 +747,7 @@ func TestIndexOpenMetaMissingOrCorrupt(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	index, err = Open(tmpIndexPath)
+	_, err = Open(tmpIndexPath)
 	if err != ErrorIndexMetaMissing {
 		t.Fatalf("expected error index metadata missing, got %v", err)
 	}
@@ -828,7 +828,7 @@ func TestSlowSearch(t *testing.T) {
 
 	defer func() {
 		// reset logger back to normal
-		SetLog(log.New(ioutil.Discard, "bleve", log.LstdFlags))
+		SetLog(log.New(io.Discard, "bleve", log.LstdFlags))
 	}()
 	// set custom logger
 	var sdw sawDataWriter

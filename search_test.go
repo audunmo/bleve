@@ -1789,7 +1789,7 @@ func TestAnalyzerInheritance(t *testing.T) {
 	}
 
 	for i := range tests {
-		t.Run(fmt.Sprintf("%s", tests[i].name), func(t *testing.T) {
+		t.Run(tests[i].name, func(t *testing.T) {
 			idxMapping := NewIndexMapping()
 			if err := idxMapping.UnmarshalJSON([]byte(tests[i].mappingStr)); err != nil {
 				t.Fatal(err)

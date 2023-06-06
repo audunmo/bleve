@@ -909,10 +909,8 @@ func TestMultiSearchTimeoutPartial(t *testing.T) {
 	ei3 := &stubIndex{
 		name: "ei3",
 		checkRequest: func(req *SearchRequest) error {
-			select {
-			case <-ctx.Done():
-				return ctx.Err()
-			}
+			<-ctx.Done()
+			return ctx.Err()
 		},
 		err: nil,
 		searchResult: &SearchResult{

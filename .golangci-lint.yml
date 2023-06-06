@@ -1,0 +1,5 @@
+linters:
+  enable:
+    - gosec
+  exclude-rules:
+    - path: ".*_test\.go$"
