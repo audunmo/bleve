@@ -281,14 +281,14 @@ func TestScorchCompositeSearchOptimizations(t *testing.T) {
 	// ID's from the search results from any of those combinations
 	// should be the same.
 	searcherOptionsToCompare := []search.SearcherOptions{
-		search.SearcherOptions{},
-		search.SearcherOptions{Explain: true},
-		search.SearcherOptions{IncludeTermVectors: true},
-		search.SearcherOptions{IncludeTermVectors: true, Explain: true},
-		search.SearcherOptions{Score: "none"},
-		search.SearcherOptions{Score: "none", IncludeTermVectors: true},
-		search.SearcherOptions{Score: "none", IncludeTermVectors: true, Explain: true},
-		search.SearcherOptions{Score: "none", Explain: true},
+		{},
+		{Explain: true},
+		{IncludeTermVectors: true},
+		{IncludeTermVectors: true, Explain: true},
+		{Score: "none"},
+		{Score: "none", IncludeTermVectors: true},
+		{Score: "none", IncludeTermVectors: true, Explain: true},
+		{Score: "none", Explain: true},
 	}
 
 	testScorchCompositeSearchOptimizations(t, twoDocIndexReader, tests,

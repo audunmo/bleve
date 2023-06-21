@@ -52,7 +52,6 @@ var ErrorUnknownStorageType = fmt.Errorf("unknown storage type")
 
 type UpsideDownCouch struct {
 	version       uint8
-	path          string
 	storeName     string
 	storeConfig   map[string]interface{}
 	store         store.KVStore
@@ -386,7 +385,7 @@ func (udc *UpsideDownCouch) countDocs(kvreader store.KVReader) (count uint64, er
 	return
 }
 
-func (udc *UpsideDownCouch) rowCount() (count uint64, err error) {
+func (udc *UpsideDownCouch) rowCount() (count uint64, err error) { //nolint:unused
 	// start an isolated reader for use during the rowcount
 	kvreader, err := udc.store.Reader()
 	if err != nil {

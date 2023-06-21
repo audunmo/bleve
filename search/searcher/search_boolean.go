@@ -42,7 +42,6 @@ type BooleanSearcher struct {
 	currShould      *search.DocumentMatch
 	currMustNot     *search.DocumentMatch
 	currentID       index.IndexInternalID
-	min             uint64
 	scorer          *scorer.ConjunctionQueryScorer
 	matches         []*search.DocumentMatch
 	initialized     bool

@@ -69,7 +69,6 @@ func (t *ExceptionsTokenizer) Tokenize(input []byte) analysis.TokenStream {
 				rv = append(rv, token)
 			}
 			lastPos += len(intermediate)
-			currInput = start
 		}
 
 		// create single token with this regexp match

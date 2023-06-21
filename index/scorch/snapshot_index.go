@@ -45,8 +45,6 @@ type asynchSegmentResult struct {
 	index int
 	docs  *roaring.Bitmap
 
-	postings segment.PostingsList
-
 	err error
 }
 
@@ -403,7 +401,7 @@ func (is *IndexSnapshot) DocCount() (uint64, error) {
 
 func (is *IndexSnapshot) Document(id string) (rv index.Document, err error) {
 	// FIXME could be done more efficiently directly, but reusing for simplicity
-	tfr, err := is.TermFieldReader(nil, []byte(id), "_id", false, false, false)
+	tfr, err := is.TermFieldReader(context.TODO(), []byte(id), "_id", false, false, false)
 	if err != nil {
 		return nil, err
 	}
@@ -501,7 +499,7 @@ func (is *IndexSnapshot) ExternalID(id index.IndexInternalID) (string, error) {
 
 func (is *IndexSnapshot) InternalID(id string) (rv index.IndexInternalID, err error) {
 	// FIXME could be done more efficiently directly, but reusing for simplicity
-	tfr, err := is.TermFieldReader(nil, []byte(id), "_id", false, false, false)
+	tfr, err := is.TermFieldReader(context.TODO(), []byte(id), "_id", false, false, false)
 	if err != nil {
 		return nil, err
 	}

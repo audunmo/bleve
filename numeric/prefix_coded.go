@@ -71,7 +71,7 @@ func MustNewPrefixCodedInt64(in int64, shift uint) PrefixCoded {
 func (p PrefixCoded) Shift() (uint, error) {
 	if len(p) > 0 {
 		shift := p[0] - ShiftStartInt64
-		if shift < 0 || shift < 63 {
+		if shift < 63 {
 			return uint(shift), nil
 		}
 	}

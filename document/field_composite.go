@@ -68,11 +68,11 @@ func (c *CompositeField) Size() int {
 	sizeInBytes := reflectStaticSizeCompositeField + size.SizeOfPtr +
 		len(c.name)
 
-	for k, _ := range c.includedFields {
+	for k := range c.includedFields {
 		sizeInBytes += size.SizeOfString + len(k) + size.SizeOfBool
 	}
 
-	for k, _ := range c.excludedFields {
+	for k := range c.excludedFields {
 		sizeInBytes += size.SizeOfString + len(k) + size.SizeOfBool
 	}
 

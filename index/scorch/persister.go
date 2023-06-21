@@ -547,7 +547,10 @@ func prepareBoltSnapshot(snapshot *IndexSnapshot, tx *bolt.Tx, path string,
 		val := make([]byte, 8)
 		bytesWritten := atomic.LoadUint64(&snapshot.parent.stats.TotBytesWrittenAtIndexTime)
 		binary.LittleEndian.PutUint64(val, bytesWritten)
-		internalBucket.Put(TotBytesWrittenKey, val)
+		err := internalBucket.Put(TotBytesWrittenKey, val)
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 
 	var filenames []string
@@ -1199,7 +1202,7 @@ func (s *Scorch) rootBoltSnapshotMetaData() ([]*snapshotMetaData, error) {
 				k := encodeUvarintAscending(nil, snapshotEpoch)
 				err = snapshots.DeleteBucket(k)
 				if err == bolt.ErrBucketNotFound {
-					err = nil
+					err = nil //nolint:ineffassign
 				}
 			}
 

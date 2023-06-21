@@ -42,7 +42,6 @@ type ConjunctionSearcher struct {
 	scorer      *scorer.ConjunctionQueryScorer
 	initialized bool
 	options     search.SearcherOptions
-	bytesRead   uint64
 }
 
 func NewConjunctionSearcher(ctx context.Context, indexReader index.IndexReader,
@@ -50,9 +49,7 @@ func NewConjunctionSearcher(ctx context.Context, indexReader index.IndexReader,
 	search.Searcher, error) {
 	// build the sorted downstream searchers
 	searchers := make(OrderedSearcherList, len(qsearchers))
-	for i, searcher := range qsearchers {
-		searchers[i] = searcher
-	}
+	copy(qsearchers, searchers)
 	sort.Sort(searchers)
 
 	// attempt the "unadorned" conjunction optimization only when we

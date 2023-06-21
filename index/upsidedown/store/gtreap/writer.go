@@ -55,12 +55,12 @@ func (w *Writer) ExecuteBatch(batch store.KVBatch) error {
 		if !fullMergeOk {
 			return fmt.Errorf("merge operator returned failure")
 		}
-		w.s.t = w.s.t.Upsert(&Item{k: kb, v: mergedVal}, rand.Int())
+		w.s.t = w.s.t.Upsert(&Item{k: kb, v: mergedVal}, rand.Int()) //nolint:gosec
 	}
 
 	for _, op := range emulatedBatch.Ops {
 		if op.V != nil {
-			w.s.t = w.s.t.Upsert(&Item{k: op.K, v: op.V}, rand.Int())
+			w.s.t = w.s.t.Upsert(&Item{k: op.K, v: op.V}, rand.Int()) //nolint:gosec
 		} else {
 			w.s.t = w.s.t.Delete(&Item{k: op.K})
 		}

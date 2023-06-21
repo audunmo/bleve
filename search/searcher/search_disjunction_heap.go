@@ -56,8 +56,6 @@ type DisjunctionHeapSearcher struct {
 
 	matching      []*search.DocumentMatch
 	matchingCurrs []*SearcherCurr
-
-	bytesRead uint64
 }
 
 func newDisjunctionHeapSearcher(ctx context.Context, indexReader index.IndexReader,
@@ -156,7 +154,7 @@ func (s *DisjunctionHeapSearcher) updateMatches() error {
 		matchingCurrs = append(matchingCurrs, next)
 
 		// now as long as top of heap matches, keep popping
-		for len(s.heap) > 0 && bytes.Compare(next.curr.IndexInternalID, s.heap[0].curr.IndexInternalID) == 0 {
+		for len(s.heap) > 0 && bytes.Equal(next.curr.IndexInternalID, s.heap[0].curr.IndexInternalID) {
 			next = heap.Pop(s).(*SearcherCurr)
 			matching = append(matching, next.curr)
 			matchingCurrs = append(matchingCurrs, next)
