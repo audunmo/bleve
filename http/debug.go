@@ -69,7 +69,7 @@ func (h *DebugDocumentHandler) ServeHTTP(w http.ResponseWriter, req *http.Reques
 	}
 	upsideDownReader, ok := internalIndexReader.(*upsidedown.IndexReader)
 	if !ok {
-		showError(w, req, fmt.Sprintf("dump is only supported by index type upsidedown"), 500)
+		showError(w, req, "dump is only supported by index type upsidedown", 500)
 		return
 	}
 

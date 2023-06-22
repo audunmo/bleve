@@ -29,8 +29,6 @@ const rightSingleQuotationMark = '’'
 const apostrophe = '\''
 const fullWidthApostrophe = '＇'
 
-const apostropheChars = rightSingleQuotationMark + apostrophe + fullWidthApostrophe
-
 // PossessiveFilter implements a TokenFilter which
 // strips the English possessive suffix ('s) from tokens.
 // It handle a variety of apostrophe types, is case-insensitive

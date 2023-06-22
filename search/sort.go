@@ -45,7 +45,7 @@ type SearchSort interface {
 }
 
 func ParseSearchSortObj(input map[string]interface{}) (SearchSort, error) {
-	descending, ok := input["desc"].(bool)
+	descending := input["desc"].(bool)
 	by, ok := input["by"].(string)
 	if !ok {
 		return nil, fmt.Errorf("search sort must specify by")
@@ -143,7 +143,7 @@ func ParseSearchSortString(input string) SearchSort {
 	if strings.HasPrefix(input, "-") {
 		descending = true
 		input = input[1:]
-	} else if strings.HasPrefix(input, "+") {
+	} else if strings.HasPrefix(input, "+") { //nolint:gosimple
 		input = input[1:]
 	}
 	if input == "_id" {

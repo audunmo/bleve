@@ -20,7 +20,6 @@ package moss
 import (
 	"encoding/json"
 	"fmt"
-	"sync"
 
 	"github.com/couchbase/moss"
 
@@ -35,7 +34,6 @@ var RegistryCollectionOptions = map[string]moss.CollectionOptions{}
 const Name = "moss"
 
 type Store struct {
-	m       sync.Mutex
 	ms      moss.Collection
 	mo      store.MergeOperator
 	llstore store.KVStore // May be nil.

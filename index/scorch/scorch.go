@@ -128,7 +128,10 @@ func NewScorch(storeName string,
 
 	typ, ok := config["spatialPlugin"].(string)
 	if ok {
-		rv.loadSpatialAnalyzerPlugin(typ)
+		err = rv.loadSpatialAnalyzerPlugin(typ)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	rv.root = &IndexSnapshot{parent: rv, refs: 1, creator: "NewScorch"}
@@ -314,7 +317,7 @@ func (s *Scorch) openBolt() error {
 
 	typ, ok := s.config["spatialPlugin"].(string)
 	if ok {
-		s.loadSpatialAnalyzerPlugin(typ)
+		return s.loadSpatialAnalyzerPlugin(typ)
 	}
 
 	return nil

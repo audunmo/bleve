@@ -23,8 +23,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
-
 var idx bleve.Index
 
 // DefaultOpenReadOnly allows some distributions of this command to default

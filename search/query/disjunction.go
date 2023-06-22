@@ -50,9 +50,7 @@ func (q *DisjunctionQuery) Boost() float64 {
 }
 
 func (q *DisjunctionQuery) AddQuery(aq ...Query) {
-	for _, aaq := range aq {
-		q.Disjuncts = append(q.Disjuncts, aaq)
-	}
+	q.Disjuncts = append(q.Disjuncts, aq...)
 }
 
 func (q *DisjunctionQuery) SetMin(m float64) {

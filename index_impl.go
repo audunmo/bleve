@@ -52,8 +52,10 @@ const storePath = "store"
 
 var mappingInternalKey = []byte("_mapping")
 
-const SearchQueryStartCallbackKey = "_search_query_start_callback_key"
-const SearchQueryEndCallbackKey = "_search_query_end_callback_key"
+type ctxkey string
+
+const SearchQueryStartCallbackKey ctxkey = "_search_query_start_callback_key"
+const SearchQueryEndCallbackKey ctxkey = "_search_query_end_callback_key"
 
 type SearchQueryStartCallbackFn func(size uint64) error
 type SearchQueryEndCallbackFn func(size uint64) error

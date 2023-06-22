@@ -52,7 +52,6 @@ var ErrorUnknownStorageType = fmt.Errorf("unknown storage type")
 
 type UpsideDownCouch struct {
 	version       uint8
-	path          string
 	storeName     string
 	storeConfig   map[string]interface{}
 	store         store.KVStore
@@ -135,22 +134,22 @@ func (udc *UpsideDownCouch) loadSchema(kvreader store.KVReader) (err error) {
 }
 
 type rowBuffer struct {
-    buf []byte
+	buf []byte
 }
 
 var rowBufferPool sync.Pool
 
 func GetRowBuffer() *rowBuffer {
-    if rb, ok := rowBufferPool.Get().(*rowBuffer); ok {
-        return rb
-    } else {
-        buf := make([]byte, RowBufferSize)
-        return &rowBuffer{buf: buf}
-    }
+	if rb, ok := rowBufferPool.Get().(*rowBuffer); ok {
+		return rb
+	} else {
+		buf := make([]byte, RowBufferSize)
+		return &rowBuffer{buf: buf}
+	}
 }
 
 func PutRowBuffer(rb *rowBuffer) {
-    rowBufferPool.Put(rb)
+	rowBufferPool.Put(rb)
 }
 
 func (udc *UpsideDownCouch) batchRows(writer store.KVWriter, addRowsAll [][]UpsideDownCouchRow, updateRowsAll [][]UpsideDownCouchRow, deleteRowsAll [][]UpsideDownCouchRow) (err error) {
@@ -386,7 +385,7 @@ func (udc *UpsideDownCouch) countDocs(kvreader store.KVReader) (count uint64, er
 	return
 }
 
-func (udc *UpsideDownCouch) rowCount() (count uint64, err error) {
+func (udc *UpsideDownCouch) rowCount() (count uint64, err error) { //nolint:unused
 	// start an isolated reader for use during the rowcount
 	kvreader, err := udc.store.Reader()
 	if err != nil {

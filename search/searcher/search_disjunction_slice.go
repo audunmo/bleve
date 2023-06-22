@@ -44,7 +44,6 @@ type DisjunctionSliceSearcher struct {
 	matching     []*search.DocumentMatch
 	matchingIdxs []int
 	initialized  bool
-	bytesRead    uint64
 }
 
 func newDisjunctionSliceSearcher(ctx context.Context, indexReader index.IndexReader,
@@ -56,9 +55,7 @@ func newDisjunctionSliceSearcher(ctx context.Context, indexReader index.IndexRea
 	}
 	// build the downstream searchers
 	searchers := make(OrderedSearcherList, len(qsearchers))
-	for i, searcher := range qsearchers {
-		searchers[i] = searcher
-	}
+	copy(searchers, qsearchers)
 	// sort the searchers
 	sort.Sort(sort.Reverse(searchers))
 	// build our searcher

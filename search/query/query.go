@@ -18,7 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 
 	"github.com/blevesearch/bleve/v2/mapping"
@@ -26,7 +26,7 @@ import (
 	index "github.com/blevesearch/bleve_index_api"
 )
 
-var logger = log.New(ioutil.Discard, "bleve mapping ", log.LstdFlags)
+var logger = log.New(io.Discard, "bleve mapping ", log.LstdFlags)
 
 // SetLog sets the logger used for logging
 // by default log messages are sent to ioutil.Discard
@@ -312,9 +312,8 @@ func ParseQuery(input []byte) (Query, error) {
 // reference queries from the input tree or new queries.
 func expandQuery(m mapping.IndexMapping, query Query) (Query, error) {
 	var expand func(query Query) (Query, error)
-	var expandSlice func(queries []Query) ([]Query, error)
 
-	expandSlice = func(queries []Query) ([]Query, error) {
+	expandSlice := func(queries []Query) ([]Query, error) {
 		expanded := []Query{}
 		for _, q := range queries {
 			exp, err := expand(q)

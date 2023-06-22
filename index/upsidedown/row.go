@@ -642,7 +642,7 @@ func (tfr *TermFrequencyRow) parseV(value []byte, includeTermVectors bool) error
 		}
 		currOffset += bytesRead
 
-		var arrayPositionsLen uint64 = 0
+		var arrayPositionsLen uint64
 		arrayPositionsLen, bytesRead = binary.Uvarint(value[currOffset:])
 		if bytesRead <= 0 {
 			return fmt.Errorf("invalid term frequency value, vector contains no arrayPositionLen")
@@ -880,6 +880,10 @@ func NewStoredRowK(key []byte) (*StoredRow, error) {
 	}
 
 	rv.doc, err = buf.ReadBytes(ByteSeparator)
+	if err != nil {
+		return nil, err
+	}
+
 	if len(rv.doc) < 2 { // 1 for min doc id length, 1 for separator
 		err = fmt.Errorf("invalid doc length 0")
 		return nil, err

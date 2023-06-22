@@ -15,7 +15,7 @@
 package mapping
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 
 	"github.com/blevesearch/bleve/v2/analysis"
@@ -37,7 +37,7 @@ type bleveClassifier interface {
 	BleveType() string
 }
 
-var logger = log.New(ioutil.Discard, "bleve mapping ", log.LstdFlags)
+var logger = log.New(io.Discard, "bleve mapping ", log.LstdFlags)
 
 // SetLog sets the logger used for logging
 // by default log messages are sent to ioutil.Discard

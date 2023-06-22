@@ -249,16 +249,16 @@ func (p *Point) QueryTokens(s *S2SpatialAnalyzerPlugin) []string {
 //----------------------------------------------------------------------------------
 
 type boundedRectangle struct {
-	minLat float64
-	maxLat float64
-	minLon float64
-	maxLon float64
+	MinLat float64
+	MaxLat float64
+	MinLon float64
+	MaxLon float64
 }
 
 func NewBoundedRectangle(minLat, minLon, maxLat,
 	maxLon float64) *boundedRectangle {
-	return &boundedRectangle{minLat: minLat,
-		maxLat: maxLat, minLon: minLon, maxLon: maxLon}
+	return &boundedRectangle{MinLat: minLat,
+		MaxLat: maxLat, MinLon: minLon, MaxLon: maxLon}
 }
 
 func (br *boundedRectangle) Type() string {
@@ -285,7 +285,7 @@ func (br *boundedRectangle) IndexTokens(s *S2SpatialAnalyzerPlugin) []string {
 }
 
 func (br *boundedRectangle) QueryTokens(s *S2SpatialAnalyzerPlugin) []string {
-	rect := s2.RectFromDegrees(br.minLat, br.minLon, br.maxLat, br.maxLon)
+	rect := s2.RectFromDegrees(br.MinLat, br.MinLon, br.MaxLat, br.MaxLon)
 
 	// obtain the terms to be searched for the given bounding box.
 	terms := s.s2GeoPointsRegionTermIndexer.GetQueryTermsForRegion(rect, "")
@@ -296,11 +296,11 @@ func (br *boundedRectangle) QueryTokens(s *S2SpatialAnalyzerPlugin) []string {
 //----------------------------------------------------------------------------------
 
 type boundedPolygon struct {
-	coordinates []Point
+	Coordinates []Point
 }
 
 func NewBoundedPolygon(coordinates []Point) *boundedPolygon {
-	return &boundedPolygon{coordinates: coordinates}
+	return &boundedPolygon{Coordinates: coordinates}
 }
 
 func (bp *boundedPolygon) Type() string {
@@ -327,8 +327,8 @@ func (bp *boundedPolygon) IndexTokens(s *S2SpatialAnalyzerPlugin) []string {
 }
 
 func (bp *boundedPolygon) QueryTokens(s *S2SpatialAnalyzerPlugin) []string {
-	vertices := make([]s2.Point, len(bp.coordinates))
-	for i, point := range bp.coordinates {
+	vertices := make([]s2.Point, len(bp.Coordinates))
+	for i, point := range bp.Coordinates {
 		vertices[i] = s2.PointFromLatLng(
 			s2.LatLngFromDegrees(point.Lat, point.Lon))
 	}
@@ -344,9 +344,9 @@ func (bp *boundedPolygon) QueryTokens(s *S2SpatialAnalyzerPlugin) []string {
 //----------------------------------------------------------------------------------
 
 type pointDistance struct {
-	dist      float64
-	centerLat float64
-	centerLon float64
+	Dist      float64
+	CenterLat float64
+	CenterLon float64
 }
 
 func (p *pointDistance) Type() string {
@@ -360,8 +360,8 @@ func (p *pointDistance) Value() ([]byte, error) {
 
 func NewPointDistance(centerLat, centerLon,
 	dist float64) *pointDistance {
-	return &pointDistance{centerLat: centerLat,
-		centerLon: centerLon, dist: dist}
+	return &pointDistance{CenterLat: centerLat,
+		CenterLon: centerLon, Dist: dist}
 }
 
 func (p *pointDistance) Intersects(s index.GeoJSON) (bool, error) {
@@ -380,8 +380,8 @@ func (pd *pointDistance) IndexTokens(s *S2SpatialAnalyzerPlugin) []string {
 
 func (pd *pointDistance) QueryTokens(s *S2SpatialAnalyzerPlugin) []string {
 	// obtain the covering query region from the given points.
-	queryRegion := s2.CapFromCenterAndRadius(pd.centerLat,
-		pd.centerLon, pd.dist)
+	queryRegion := s2.CapFromCenterAndRadius(pd.CenterLat,
+		pd.CenterLon, pd.Dist)
 
 	// obtain the query terms for the query region.
 	terms := s.s2GeoPointsRegionTermIndexer.GetQueryTermsForRegion(queryRegion, "")

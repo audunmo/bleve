@@ -65,7 +65,7 @@ func NewGeoBoundingBoxSearcher(ctx context.Context, indexReader index.IndexReade
 	}
 
 	// do math to produce list of terms needed for this search
-	onBoundaryTerms, notOnBoundaryTerms, err := ComputeGeoRange(nil, 0, GeoBitsShift1Minus1,
+	onBoundaryTerms, notOnBoundaryTerms, err := ComputeGeoRange(context.TODO(), 0, GeoBitsShift1Minus1,
 		minLon, minLat, maxLon, maxLat, checkBoundaries, indexReader, field)
 	if err != nil {
 		return nil, err

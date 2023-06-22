@@ -27,6 +27,12 @@ var reflectStaticSizeDocumentMatch int
 var reflectStaticSizeSearchContext int
 var reflectStaticSizeLocation int
 
+type ctxkey string
+
+const SearchIOStatsCallbackKey ctxkey = "_search_io_stats_callback_key"
+
+type SearchIOStatsCallbackFunc func(uint64)
+
 func init() {
 	var dm DocumentMatch
 	reflectStaticSizeDocumentMatch = int(reflect.TypeOf(dm).Size())
@@ -245,7 +251,7 @@ func (dm *DocumentMatch) Size() int {
 		sizeInBytes += size.SizeOfString + len(entry)
 	}
 
-	for k, _ := range dm.Fields {
+	for k := range dm.Fields {
 		sizeInBytes += size.SizeOfString + len(k) +
 			size.SizeOfPtr
 	}
